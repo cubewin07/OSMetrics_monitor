@@ -1,5 +1,6 @@
-using System.Diagnostics;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace Metrics
 {
@@ -66,30 +67,31 @@ namespace Metrics
             }
         }
 
-        public void kill(Object sender, DataGridViewCellEventArgs e)
+        
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if(e.RowIndex >= 0)
             {
                 int pid = (int)dataGridView1.Rows[e.RowIndex].Cells["PID"].Value;
-                if (e.ColumnIndex == dataGridView1?.Columns["Kill"].Index)
+                if (e.ColumnIndex == dataGridView1.Columns["Kill"].Index)
                 {
                     try
                     {
                         Process.GetProcessById(pid).Kill();
+                        return;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                     }
+                }
 
-                }
-                else
-                {
-                    SelectedPID = pid;
-                }
+                label3.Text = pid.ToString();
+                SelectedPID = pid;
+
             }
         }
-
     }
 
     public class ProcessSnapshot

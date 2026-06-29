@@ -35,6 +35,7 @@
             label2 = new Label();
             progressBar1 = new ProgressBar();
             progressBar2 = new ProgressBar();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -45,6 +46,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(541, 193);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // label1
             // 
@@ -78,11 +80,21 @@
             progressBar2.Size = new Size(145, 23);
             progressBar2.TabIndex = 4;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(676, 128);
+            label3.Name = "label3";
+            label3.Size = new Size(38, 15);
+            label3.TabIndex = 5;
+            label3.Text = "label3";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label3);
             Controls.Add(progressBar2);
             Controls.Add(progressBar1);
             Controls.Add(label2);
@@ -115,7 +127,6 @@
             progressBar2.Minimum = 0;
             progressBar2.Maximum = 1600000;
 
-            dataGridView1.CellContentClick += kill;
             // Start timer
             this.timer1.Start();
         }
@@ -128,5 +139,6 @@
         private Label label2;
         private ProgressBar progressBar1;
         private ProgressBar progressBar2;
+        private Label label3;
     }
 }
