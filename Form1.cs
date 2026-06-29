@@ -35,7 +35,10 @@ namespace Metrics
             RefreshList(dataGridView1, snapshot);
             MoveBackToSelectedProcess(SelectedPID);
 
-            label1.Text = CpuCounter.NextValue().ToString();
+            float cpuCounter = CpuCounter.NextValue();
+            progressBar1.Value = (int)Math.Clamp(cpuCounter * 100, 0, 10000);
+
+            label1.Text =cpuCounter.ToString();
             label2.Text = RamCounter.NextValue().ToString();
 
         }
