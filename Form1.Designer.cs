@@ -123,6 +123,8 @@
             progressBar1.Minimum = 0;
             progressBar1.Maximum = 10000; // 0,01% precision
 
+            dataGridView1.CellDoubleClick += ShowingDetail;
+
             // Configure progress bar (Ram)
             progressBar2.Minimum = 0;
             progressBar2.Maximum = 1600000;

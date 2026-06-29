@@ -15,6 +15,9 @@ namespace Metrics
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int SelectedPID { get; set; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public List<ProcessSnapshot> Psnapshots { get; set; } = [];
+
         public Form1()
         {
             InitializeComponent();
@@ -33,7 +36,9 @@ namespace Metrics
                 RawProcces = p
             }).ToList();
 
-            RefreshList(dataGridView1, snapshot);
+            Psnapshots = snapshot;
+
+            RefreshList(dataGridView1, Psnapshots);
             MoveBackToSelectedProcess(SelectedPID);
 
             // CPU
@@ -67,11 +72,11 @@ namespace Metrics
             }
         }
 
-        
+
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex >= 0)
+            if (e.RowIndex >= 0)
             {
                 int pid = (int)dataGridView1.Rows[e.RowIndex].Cells["PID"].Value;
                 if (e.ColumnIndex == dataGridView1.Columns["Kill"].Index)
@@ -90,6 +95,18 @@ namespace Metrics
                 label3.Text = pid.ToString();
                 SelectedPID = pid;
 
+            }
+        }
+
+        private void ShowingDetail(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            int pid = (int)dataGridView1.Rows[e.RowIndex].Cells["PID"].Value;
+            var rowProcess = Psnapshots.First(p => p.PID == pid);
+            if (rowProcess != null)
+            {
+                //PUt code here
             }
         }
     }
