@@ -34,6 +34,7 @@
             timer1 = new System.Windows.Forms.Timer(components);
             label2 = new Label();
             progressBar1 = new ProgressBar();
+            progressBar2 = new ProgressBar();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -70,11 +71,19 @@
             progressBar1.Size = new Size(169, 23);
             progressBar1.TabIndex = 3;
             // 
+            // progressBar2
+            // 
+            progressBar2.Location = new Point(478, 304);
+            progressBar2.Name = "progressBar2";
+            progressBar2.Size = new Size(145, 23);
+            progressBar2.TabIndex = 4;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(progressBar2);
             Controls.Add(progressBar1);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -98,10 +107,13 @@
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MemoryMD", HeaderText = "Memory (MB)", Name = "MemoryMB" });
             dataGridView1.Columns.Add(new DataGridViewButtonColumn { Name = "Kill", Text = "Kill", UseColumnTextForButtonValue = true, HeaderText = "" });
 
-            // Configure progress bar
+            // Configure progress bar (CPU)
             progressBar1.Minimum = 0;
             progressBar1.Maximum = 10000; // 0,01% precision
 
+            // Configure progress bar (Ram)
+            progressBar2.Minimum = 0;
+            progressBar2.Maximum = 1600000;
 
             dataGridView1.CellContentClick += kill;
             // Start timer
@@ -115,5 +127,6 @@
         private System.Windows.Forms.Timer timer1;
         private Label label2;
         private ProgressBar progressBar1;
+        private ProgressBar progressBar2;
     }
 }
