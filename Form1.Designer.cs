@@ -97,7 +97,7 @@
 
         private void Custom()
         {
-            this.timer1.Interval = 1000;
+            this.timer1.Interval = 5000;
             this.timer1.Tick += UpdadingMetrics;
 
             // Configure datagridview

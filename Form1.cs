@@ -43,7 +43,7 @@ namespace Metrics
             float ramCounter = RamCounter.NextValue();
             progressBar2.Value = (int)Math.Clamp(ramCounter * 100, 0, 1600000);
 
-            label1.Text =cpuCounter.ToString();
+            label1.Text = cpuCounter.ToString();
             label2.Text = RamCounter.NextValue().ToString();
 
         }
@@ -55,7 +55,7 @@ namespace Metrics
 
         public void MoveBackToSelectedProcess(int id)
         {
-            foreach(DataGridViewRow row in dataGridView1.Rows)
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if ((int)row.Cells["PID"].Value == id)
                 {
@@ -71,23 +71,25 @@ namespace Metrics
             if (e.RowIndex >= 0)
             {
                 int pid = (int)dataGridView1.Rows[e.RowIndex].Cells["PID"].Value;
-                if(e.ColumnIndex == dataGridView1?.Columns["Kill"].Index)
+                if (e.ColumnIndex == dataGridView1?.Columns["Kill"].Index)
                 {
                     try
                     {
-                       Process.GetProcessById(pid).Kill();
+                        Process.GetProcessById(pid).Kill();
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                     }
 
-                } else
+                }
+                else
                 {
                     SelectedPID = pid;
                 }
             }
         }
+
     }
 
     public class ProcessSnapshot
