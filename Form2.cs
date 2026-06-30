@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Design.Behavior;
 
 namespace Metrics
 {
@@ -16,6 +17,8 @@ namespace Metrics
     {
         private DateTime _lastCpuTime;
         private TimeSpan _lastTotalProcessorTime;
+        private int _pid;
+
         public Form2()
         {
             InitializeComponent();
@@ -24,8 +27,8 @@ namespace Metrics
         public Form2(ProcessSnapshot snapshot)
         {
             InitializeComponent();
-            UpdateCPU(snapshot.RawProcces);
-            label2.Text = snapshot.MemoryMD.ToString();
+            Render(snapshot);
+            _pid = snapshot.PID;
         }
 
         public void UpdateCPU(Process process)
@@ -45,6 +48,25 @@ namespace Metrics
             var name = process.ProcessName.Split(' ')[0];
 
             label1.Text = name;
+        }
+
+        public void Update(ProcessSnapshot snapshot)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() => Render(snapshot));
+            }
+            Render(snapshot);
+            
+        }
+
+        private void Render(ProcessSnapshot snapshot)
+        {
+            if (snapshot.PID != _pid)
+                return;
+            label1.Text = snapshot.MemoryMD.ToString();
+            label2.Text = snapshot.Name;
+            label3.Text = snapshot.PID.ToString();
         }
     }
 }

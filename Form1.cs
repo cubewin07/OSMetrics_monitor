@@ -16,8 +16,11 @@ namespace Metrics
         public int SelectedPID { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<ProcessSnapshot> Psnapshots { get; set; } = [];
+        public Dictionary<int, ProcessSnapshot> Psnapshots { get; set; } = [];
 
+        public event Action<ProcessSnapshot> ProcessUpdated;
+
+        private List<int> _detailPID = [];
         public Form1()
         {
             InitializeComponent();
@@ -28,17 +31,43 @@ namespace Metrics
         {
             Process[] current = Process.GetProcesses();
 
-            var snapshot = current.Select(p => new ProcessSnapshot
+            List<ProcessSnapshot> snapshots = [];
+            
+            foreach (Process p in current)
             {
-                Name = p.ProcessName,
-                PID = p.Id,
-                MemoryMD = p.WorkingSet64 / 1024 / 1024,
-                RawProcces = p
-            }).ToList();
+                if (Psnapshots.ContainsKey(p.Id))
+                {
+                    Psnapshots.TryGetValue(p.Id, out var snapshot);
 
-            Psnapshots = snapshot;
+                    if(snapshot != null)
+                    {
+                        
 
-            RefreshList(dataGridView1, Psnapshots);
+                        snapshots.Add(snapshot);
+                    }
+
+                    
+                } else
+                {
+                    Psnapshots.Add(p.Id, new ProcessSnapshot
+                    {
+                        Name = p.ProcessName,
+                        PID = p.Id,
+                        RawProcces = p,
+                        MemoryMD = p.WorkingSet64 / 1024 / 1024
+                    });
+
+                    snapshots.Add(Psnapshots[p.Id]);
+                }
+
+                if (_detailPID[p.Id] != null)
+                {
+                    Psnapshots.TryGetValue(_detailPID[p.Id], out var snapshot);
+                    ProcessUpdated.Invoke(snapshot);
+                }
+            }
+
+            RefreshList(dataGridView1, snapshots);
             MoveBackToSelectedProcess(SelectedPID);
 
             // CPU
@@ -103,12 +132,23 @@ namespace Metrics
             if (e.RowIndex < 0) return;
 
             int pid = (int)dataGridView1.Rows[e.RowIndex].Cells["PID"].Value;
-            var rowProcess = Psnapshots.First(p => p.PID == pid);
+            var rowProcess = Psnapshots[pid];
             if (rowProcess != null)
             {
+                _detailPID.Add(rowProcess.PID);
                 //PUt code here
                 Form detailForm = new Form2(rowProcess);
+
+                ProcessUpdated += detailForm.Update;
+
+                detailForm.FormClosed += (s, e) =>
+                {
+                    ProcessUpdated -= detailForm.Update;
+                    _detailPID.Remove(rowProcess.PID);
+                };
+
                 detailForm.Show();
+
             }
         }
 
