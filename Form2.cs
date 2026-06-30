@@ -25,22 +25,26 @@ namespace Metrics
         {
             InitializeComponent();
             UpdateCPU(snapshot.RawProcces);
+            label2.Text = snapshot.MemoryMD.ToString();
         }
 
         public void UpdateCPU(Process process)
         {
-            var currentTime = DateTime.UtcNow;
-            var currentProcessorTime = process.TotalProcessorTime;
+            // Access denied
+            //var currentTime = DateTime.UtcNow;
+            //var currentProcessorTime = process.TotalProcessorTime;
 
-            double cpuUsed = (currentProcessorTime - _lastTotalProcessorTime).TotalMilliseconds;
-            double elapsed = (currentTime - _lastCpuTime).TotalMilliseconds;
+            //double cpuUsed = (currentProcessorTime - _lastTotalProcessorTime).TotalMilliseconds;
+            //double elapsed = (currentTime - _lastCpuTime).TotalMilliseconds;
 
-            float cpuPercent = (float)(cpuUsed / (elapsed * Environment.ProcessorCount) * 100);
+            //float cpuPercent = (float)(cpuUsed / (elapsed * Environment.ProcessorCount) * 100);
 
-            _lastCpuTime = currentTime;
-            _lastTotalProcessorTime = currentProcessorTime;
+            //_lastCpuTime = currentTime;
+            //_lastTotalProcessorTime = currentProcessorTime;
 
-            label1.Text = cpuPercent.ToString();
+            var name = process.ProcessName.Split(' ')[0];
+
+            label1.Text = name;
         }
     }
 }

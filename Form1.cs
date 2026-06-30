@@ -107,7 +107,22 @@ namespace Metrics
             if (rowProcess != null)
             {
                 //PUt code here
+                Form detailForm = new Form2(rowProcess);
+                detailForm.Show();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (timer1.Enabled)
+            {
+                timer1.Stop();
+                button1.Text = "Start";
+                return;
+            }
+
+            timer1.Start();
+            button1.Text = "Stop";
         }
     }
 
